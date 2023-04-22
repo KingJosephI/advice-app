@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import iconDice from "../mockup/icon-dice.svg";
 import dividerPattern from "../mockup/pattern-divider-desktop.svg";
 import axios from "axios";
-import { useRef } from "react";
+import { useState } from "react";
 
 const fetchAdvice = async () => {
   const response = await axios.get("https://api.adviceslip.com/advice");
@@ -16,11 +16,14 @@ const Advice = () => {
     staleTime: 5000,
     refetchInterval: 5000,
   });
+  const [isCopied, setIsCopied] = useState(false);
   if (isLoading) return <h1>Loading...</h1>;
   if (isError) return <h1>Error while fetching data...</h1>;
 
   const copyToClipboard = () => {
+    setIsCopied(false);
     navigator.clipboard.writeText(data.slip.advice);
+    setIsCopied(true);
   };
 
   return (
